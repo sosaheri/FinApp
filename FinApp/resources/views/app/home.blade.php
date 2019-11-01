@@ -17,8 +17,8 @@
                 </div>
                 <div class="col-7 col-md-8">
                   <div class="numbers">
-                    <p class="card-category">Usuarios Registrados</p>
-                    <p class="card-title">150
+                  <p class="card-category">Usuarios Registrados </p>
+                    <p class="card-title">{{ $users }}
                       <p>
                   </div>
                 </div>

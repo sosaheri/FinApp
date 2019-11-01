@@ -14,52 +14,63 @@ use Illuminate\Support\Facades\Validator;
 use DB;
 use Input;
 use Storage;
+use Auth;
 
 class UserController extends Controller
 {
     public function index(){
         $users = User::all();
+
         return view('app.gestionUsuarios', compact('users')); 
     }
 
     public function ver($id){
+        
+
         $user = User::find($id);
-
-        dd($user);
-
-        return view('app.verUsuario',['user'=>$user]);
+        return view('app.verUsuario', ['user'=>$user]);
     }
 
-    public function actualizar($id){
+    public function verPerfil($id){
+        
+
         $user = User::find($id);
-        return view('app.actualizarUsuario',['user'=>$user]);
+        return view('app.miUsuario', ['user'=>$user]);
     }
 
-    public function update(ItemUpdateRequest $request, $id){        
+    public function update(Request $request, $id){        
         // Recibo todos los datos desde el formulario Actualizar
         $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = $request->password;
     
-        // Actualizo los datos en la tabla 'jugos'
+        // Actualizo los datos en la tabla 'user'
         $user->save();
+
+        if(Auth::user()->hasRole('admin')){
+                    // Muestro un mensaje y redirecciono a la vista principal 
+                    Session::flash('success', 'Editado Satisfactoriamente !');
+                    return Redirect::to('gestionUsuarios');
+        }else{
+
+                     // Muestro un mensaje y redirecciono a la vista principal 
+                    Session::flash('success', 'Editado Satisfactoriamente !');
+                    return Redirect::to('/');
+        }
     
-        // Muestro un mensaje y redirecciono a la vista principal 
-        Session::flash('message', 'Editado Satisfactoriamente !');
-        return Redirect::to('app.gestionUsuarios');
+
     }
 
     public function eliminar($id){
         // Indicamos el 'id' del registro que se va Eliminar
         $user = User::find($id);
                  
-        // Elimino el registro de la tabla 'jugos' 
+        // Elimino el registro de la tabla 'u' 
         User::destroy($id);
             
         // Muestro un mensaje y redirecciono a la vista principal 
-        Session::flash('message', 'Eliminado Satisfactoriamente !');
-        return Redirect::to('app.gestionUsuarios');
+        Session::flash('success', 'Eliminado Satisfactoriamente !');
+        return Redirect::to('gestionUsuarios');
     }
 
 }

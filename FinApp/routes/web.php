@@ -17,4 +17,8 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 Route::get('gestionUsuarios', 'UserController@index')->name('gestionUsuarios');
-Route::get('verUsuario/{$id}', 'UserController@ver')->name('verUsuario');
+Route::get('verUsuario/{id}', 'UserController@ver')->name('verUsuario');
+Route::post('updateUsuario/{id}', 'UserController@update')->name('updateUsuario');
+Route::get('eliminarUsuario/{id}', 'UserController@eliminar');
+
+Route::get('miUsuario/{id}', 'UserController@verPerfil')->name('miUsuario');
